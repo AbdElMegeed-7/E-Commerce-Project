@@ -9,17 +9,21 @@
 <div class="container py-5">
   <div class="row mt-5">
     <div class="col-10 mx-auto col-md-6 my-3">  
-      <img src="{% static 'img/product-2.png' %}" alt="">
+      <img src="{{ product.image.url }}" alt="">
     </div>
     <div class="col-10 mx-auto col-md-6 my-3">
       <div>
-        <h1 class="product-title">Phone name</h1>
+        <h1 class="product-title">{{ product.name }}</h1>
         <h5 class="text-info font-italic mb-3">
-          <span class="mr-1">$  </span>777
+          <span class="mr-1">$  </span>{{ product.price }}
         </h5>
         <p class="product-description">Product Description</p>
-        <p class="text-justify product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda esse nulla expedita possimus repudiandae perferendis ea consequuntur deserunt nisi veniam, officia iste architecto iure aut soluta ullam voluptates consequatur libero?</p>
+        <p class="text-justify product-text">{{ product.description }}</p>
+        {% if product.stock <= 0 %}
         <p class="text-justify product-text"><b>Out Of Stock</b></p>
+        {% else %}
+        <a href="">Add To Cart</a>
+        {% endif %}
       </div>
     </div>
   </div>
