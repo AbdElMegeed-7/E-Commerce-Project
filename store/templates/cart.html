@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+  <div class="text-center">
+    <br> 
+    <div class="text-center product-title">
+      Your Shopping Cart
+    </div>
+  </div>
+
+  <div class="row mx-auto">
+    
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+      <table class="table cart_table">
+        <thead class="cart_thead">
+          <tr>
+            <th colspan="4">
+              Your Items
+            </th>
+          </tr>
+        </thead>
+        {% for i in '12345' %}
+          <tr>
+            <td>
+              <a href="">
+                <img src="{% static 'img/product-2.png' %}" width="100" height="100" alt="">
+              </a>
+            </td>
+            <td class="text-left">
+              Product name
+              <br>
+              SKU : 7
+              <br>
+              Unit Price 77$
+              <br>
+              Qty : 7 * 77
+            </td>
+            <td>
+              $ 144
+            </td>
+            <td>
+              &nbsp;<a href=""><i class="fas fa-plus-circle cart_icon"></i></a>
+              &nbsp;<a href=""><i class="fas fa-minus-circle cart_icon"></i></a>
+              &nbsp;<a href=""><i class="fas fa-trash-alt cart_icon"></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>  
+    </div>
+
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+      <table class="table cart_table">
+        <thead class="cart_thead">
+          <tr>
+            <th colspan="4">
+              Your Table
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Please review your cart items before proceeding with the paymant .
+            </td>
+          </tr>
+          <tr>
+            <td class="text-left">
+              You Total is <strong>$ 144</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mx-auto">
+        <a href="" style="text-decoration: none;">
+          <button type="button" class="btn btn-lg btn-block bg-dark text-white">
+            Continue Shopoping
+          </button>
+        </a>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+{% endblock %}

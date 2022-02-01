@@ -28,3 +28,6 @@ def productPage(request, category_slug, product_slug):
     'product': product,
   }
   return render(request, 'product.html', context) 
+
+def cart(request):
+  return render(request, 'cart.html')
