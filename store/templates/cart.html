@@ -1,4 +1,8 @@
-{% extends 'base.html'%} {% load static %} {% block title %} Cart {% endblock %}
+{% extends 'base.html'%} 
+{% load static %} 
+{% block title %} Cart {% endblock %}
+
+
 {% block content %}
 <!-- Check if and Items in The cart -->
 {% if not cart_items %}
@@ -47,26 +51,26 @@
         </td>
         <td>$ {{ cart_item.sub_total }}</td>
         {% if cart_item.quantity < cart_item.product.stock %}
-          <td>
-            &nbsp;<a href="{% url 'add_cart' cart_item.product.id %}"
-              ><i class="fas fa-plus-circle cart_icon"></i
-            ></a>
-            &nbsp;<a href="{% url 'cart_remove' cart_item.product.id %}"
-              ><i class="fas fa-minus-circle cart_icon"></i
-            ></a>
-            &nbsp;<a href="{% url 'cart_remove_product' cart_item.product.id %}"
-              ><i class="fas fa-trash-alt cart_icon"></i
-            ></a>
-          </td>
+        <td>
+          &nbsp;<a href="{% url 'add_cart' cart_item.product.id %}"
+            ><i class="fas fa-plus-circle cart_icon"></i
+          ></a>
+          &nbsp;<a href="{% url 'cart_remove' cart_item.product.id %}"
+            ><i class="fas fa-minus-circle cart_icon"></i
+          ></a>
+          &nbsp;<a href="{% url 'cart_remove_product' cart_item.product.id %}"
+            ><i class="fas fa-trash-alt cart_icon"></i
+          ></a>
+        </td>
         {% else %}
-          <td>
-            &nbsp;<a href="{% url 'cart_remove' cart_item.product.id %}"
-              ><i class="fas fa-minus-circle cart_icon"></i
-            ></a>
-            &nbsp;<a href="{% url 'cart_remove_product' cart_item.product.id %}"
-              ><i class="fas fa-trash-alt cart_icon"></i
-            ></a>
-          </td>
+        <td>
+          &nbsp;<a href="{% url 'cart_remove' cart_item.product.id %}"
+            ><i class="fas fa-minus-circle cart_icon"></i
+          ></a>
+          &nbsp;<a href="{% url 'cart_remove_product' cart_item.product.id %}"
+            ><i class="fas fa-trash-alt cart_icon"></i
+          ></a>
+        </td>
         {% endif %}
       </tr>
       {% endfor %}
@@ -87,11 +91,30 @@
           </td>
         </tr>
         <tr>
-          <td class="text-left">You Total is <strong>$ {{ total }}</strong></td>
+          <td class="text-left">
+            You Total is 
+            <strong>$ {{ total }}</strong>
+          </td>
         </tr>
       </tbody>
     </table>
     <div class="mx-auto">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js"
+        class="stripe-button"
+        data-key="{{ data_key }}"
+        data-amount="{{ stripe_total }}"
+        data-name="Z-Store"
+        data-description="{{ description }}"
+        data-locale="auto"
+        data-currency="usd"
+        data-shipping-address="true"
+        data-billing-address="true"
+        data-zip-code="true"
+        >
+        </script>
+      </form>
       <a href="{% url 'home' %}" style="text-decoration: none">
         <button type="button" class="btn btn-lg btn-block bg-dark text-white">
           Continue Shopoping

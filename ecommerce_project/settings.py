@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'store.apps.StoreConfig',
+    'stripe',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,10 @@ MEDIA_URL = '/media/'
 STATICFILES = [
     os.path.join(BASE_DIR, "static",)
 ]
+
+# Stripe
+STRIPE_PUBLISHABLE_KEY = ''
+STRIPE_SECRETE_KEY = ''
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

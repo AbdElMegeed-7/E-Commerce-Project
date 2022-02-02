@@ -1,6 +1,10 @@
+from locale import currency
 from django.shortcuts import get_object_or_404, redirect, render, redirect
 from .models import Category, Product, Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
+import stripe
+from django.conf import settings
+
 
 def home(request, category_slug= None):
   category_page = None
@@ -73,7 +77,28 @@ def cart_detail(request, total= 0, counter= 0, cart_items= None):
       counter += cart_item.quantity
   except ObjectDoesNotExist:
     pass
-  
+  # Stripe
+  stripe.api_key = settings.STRIPE_SECRETE_KEY
+  stripe_total = int(total * 100)
+  description = 'Z-Store - New Order'
+  data_key = settings.STRIPE_PUBLISHABLE_KEY
+  if request.method == 'POST':
+    try:
+      token = request.POST['stripeToken']
+      email = request.POST['stripeEmail']
+      customer = stripe.Customer.create(
+                email=email,
+                source=token,
+                )
+      charge = stripe.Charge.create(
+                amount=stripe_total,
+                currency='usd',
+                description=description,
+                customer=customer.id, 
+                )
+    except stripe.error.CardError as e:
+      return False,e
+      
   return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter))
 
 
