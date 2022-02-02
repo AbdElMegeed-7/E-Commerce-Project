@@ -20,9 +20,13 @@
         <p class="product-description">Product Description</p>
         <p class="text-justify product-text">{{ product.description }}</p>
         {% if product.stock <= 0 %}
-        <p class="text-justify product-text"><b>Out Of Stock</b></p>
+          <p class="text-justify product-text"><b>Out Of Stock</b></p>
         {% else %}
-        <a href="">Add To Cart</a>
+          <a href="{% url 'add_cart' product.id %}">
+            <button type="button" name="button" class="btn btn-secondary">
+            Add To Cart
+            </button>
+          </a>
         {% endif %}
       </div>
     </div>
