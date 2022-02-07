@@ -1,6 +1,6 @@
 from locale import currency
 from django.shortcuts import get_object_or_404, redirect, render, redirect
-from .models import Category, Product, Cart, CartItem
+from .models import Category, Product, Cart, CartItem, Order, OrderItem
 from django.core.exceptions import ObjectDoesNotExist
 import stripe
 from django.conf import settings
@@ -82,10 +82,23 @@ def cart_detail(request, total= 0, counter= 0, cart_items= None):
   stripe_total = int(total * 100)
   description = 'Z-Store - New Order'
   data_key = settings.STRIPE_PUBLISHABLE_KEY
+  
   if request.method == 'POST':
     try:
       token = request.POST['stripeToken']
       email = request.POST['stripeEmail']
+      billingName = request.POST['stripeBillingName']
+      billingAddress = request.POST['stripeBillingAddressLine1']
+      billingCity = request.POST['stripeBillingAddressCity']
+      billingPostcode = request.POST['stripeBillingAddressZip']
+      billingCountry = request.POST['stripeBillingAddressContryCode']
+      shippingName = request.POST['stripeShippingName']
+      shippingAdress1 = request.POST['stripeShippingAdressLine1']
+      shippingCity = request.POST['stripeShippingAdressCity']
+      shippingPostcode = request.POST['stripeShippingAdressZip']
+      shippingCountry = request.POST['stripeShippingAdressCountryCode'] 
+      
+      
       customer = stripe.Customer.create(
                 email=email,
                 source=token,
@@ -96,6 +109,43 @@ def cart_detail(request, total= 0, counter= 0, cart_items= None):
                 description=description,
                 customer=customer.id, 
                 )
+      # Creating The Order
+      try :
+        order_detail = Order.Objects.create(
+                       token = token,
+                       total = total,
+                       emailAddress1 = email,
+                       billingCity = billingCity,
+                       billingPostcode = billingPostcode,
+                       billingCountry = billingCountry,
+                       shippingName = shippingName,
+                       shippingAdress1 = shippingAdress1,
+                       shippingCity = shippingCity,
+                       shippingPostcode = shippingPostcode,
+                       shippingCountry = shippingCountry,
+                      )
+        order_detail.save()
+        for order_item in cart_items:
+          or_item = OrderItem.objects.create(
+                       product= order_item.product.name,
+                       quantity = order_item.quantity,
+                       price = order_item.product.price,
+                       order = order_detail,
+                      )
+          or_item.save()  
+          
+          #reduce stock
+          products= Product.objects.get(id=order_item.product.id)
+          products.stock= int(order_item.product.stock - order_item.quantity)
+          products.save()
+          
+          # Print the massege when the order is created
+          print("The Order has been Created")
+        return redirect('home')
+      
+      except ObjectDoesNotExist:
+        pass                
+      
     except stripe.error.CardError as e:
       return False,e
       
