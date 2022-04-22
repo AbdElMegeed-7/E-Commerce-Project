@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     
     'store.apps.StoreConfig',
     'stripe',
+    'crispy_forms', 
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,5 @@ STRIPE_SECRETE_KEY = ''
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Django Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

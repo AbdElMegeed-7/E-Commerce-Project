@@ -187,6 +187,7 @@ def signup_view(request):
       signup_user = User.objects.get(username=username)
       customer_group = Group.objects.get(name='Customer')
       customer_group.user_set.add(signup_user)
+      # return redirect('home')
   else:
     form = SignUpForm()
   return render(request, 'signup.html', {'form': form})
