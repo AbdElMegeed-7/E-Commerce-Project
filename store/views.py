@@ -2,6 +2,8 @@ from locale import currency
 from django.shortcuts import get_object_or_404, redirect, render, redirect
 from .models import Category, Product, Cart, CartItem, Order, OrderItem
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
 import stripe
 from django.conf import settings
 from django.contrib.auth.models import User, Group
@@ -191,3 +193,26 @@ def signup_view(request):
   else:
     form = SignUpForm()
   return render(request, 'signup.html', {'form': form})
+
+
+
+def signin_view(request):
+  if request.method == 'POST':
+    form = AuthenticationForm(data=request.POST)
+    if form.is_valid():
+      username = request.POST['username']
+      password = request.POST['password']
+      user = authenticate(username=username, password=password)
+      if user is not None:
+        login(request, user)
+        return redirect('home')
+      else:
+        return redirect('signup')
+  else:
+    form = AuthenticationForm()
+  return render(request, 'signin.html', {'form': form})
+      
+
+def signout_view(request):
+  logout(request)
+  return redirect('signin')
