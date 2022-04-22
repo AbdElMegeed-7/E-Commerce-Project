@@ -19,3 +19,8 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.2em;
 }
+
+.errorlist li{
+  color: red;
+  font-weight: bold;
+}
