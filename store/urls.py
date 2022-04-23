@@ -16,4 +16,7 @@ urlpatterns = [
   path('account/create/', views.signup_view, name='signup'),
   path('account/signin/', views.signin_view, name='signin'),
   path('account/signout/', views.signout_view, name='signout'),
+  
+  path('order_history/', views.order_history, name='order_history'),
+
 ]

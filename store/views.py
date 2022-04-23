@@ -1,5 +1,4 @@
-from locale import currency
-from django.shortcuts import get_object_or_404, redirect, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Category, Product, Cart, CartItem, Order, OrderItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import AuthenticationForm
@@ -8,6 +7,7 @@ import stripe
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from .forms import SignUpForm
+from django.contrib.auth.decorators import login_required
 
 
 def home(request, category_slug= None):
@@ -216,3 +216,12 @@ def signin_view(request):
 def signout_view(request):
   logout(request)
   return redirect('signin')
+
+
+@login_required(redirect_field_name='next', login_url='signin')
+def order_history(request):
+  if request.user.is_authenticated :
+    email = str(request.user.email)
+    order_details = Order.objects.filter(email_address=email)
+  context = {'order_details': order_details}
+  return render(request, 'orders_list.html', context)
