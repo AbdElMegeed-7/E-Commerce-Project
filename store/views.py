@@ -225,3 +225,16 @@ def order_history(request):
     order_details = Order.objects.filter(email_address=email)
   context = {'order_details': order_details}
   return render(request, 'orders_list.html', context)
+
+
+@login_required(redirect_field_name='next', login_url='signin')
+def view_order(request, order_id):
+  if request.user.is_authenticated :
+    email = str(request.user.email)
+    order = Order.objects.get(id=order_id, email_address=email)
+    order_items = OrderItem.objects.filter(order=order)
+  context = {
+    'order': order, 
+    'order_items': order_items,
+  }
+  return render(request, 'order_detail.html', context)
