@@ -238,3 +238,8 @@ def view_order(request, order_id):
     'order_items': order_items,
   }
   return render(request, 'order_detail.html', context)
+
+
+def search(request):
+  products = Product.objects.filter(name__contains=request.GET['title'])
+  return render(request, 'home.html', {'products': products})

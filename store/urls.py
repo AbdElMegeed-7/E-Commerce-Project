@@ -18,6 +18,8 @@ urlpatterns = [
   path('account/signout/', views.signout_view, name='signout'),
   
   path('order_history/', views.order_history, name='order_history'),
-  path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+  path('order/<int:order_id>/', views.view_order, name='order_detail'),
+  
+  path('search/', views.search, name='search'),
 
 ]
