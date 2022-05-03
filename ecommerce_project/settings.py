@@ -130,3 +130,4 @@ STRIPE_SECRETE_KEY = ''
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+

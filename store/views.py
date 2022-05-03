@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 import stripe
 from django.conf import settings
 from django.contrib.auth.models import User, Group
-from .forms import SignUpForm
+from .forms import SignUpForm, ContactForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -243,3 +243,19 @@ def view_order(request, order_id):
 def search(request):
   products = Product.objects.filter(name__contains=request.GET['title'])
   return render(request, 'home.html', {'products': products})
+
+
+def contact(request):
+    if request.method == 'POST':
+      form = ContactForm(request.POST)
+      if form.is_valid():
+        subject = form.cleaned_data.get('subject')
+        from_email = form.cleaned_data.get('from_email')
+        message = form.cleaned_data.get('message')
+        name = form.cleaned_data.get('name')
+        
+        # message_format = f"{name} sent you a new message : \n\n{message}"
+        return render(request, 'contact_succuss.html')    
+    else:
+      form = ContactForm()   
+    return render(request, 'contact.html', {'form': form})
