@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 import stripe
 from django.conf import settings
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib.auth.models import User, Group
 from .forms import SignUpForm, ContactForm
 from django.contrib.auth.decorators import login_required
@@ -249,13 +251,22 @@ def contact(request):
     if request.method == 'POST':
       form = ContactForm(request.POST)
       if form.is_valid():
-        subject = form.cleaned_data.get('subject')
-        from_email = form.cleaned_data.get('from_email')
-        message = form.cleaned_data.get('message')
-        name = form.cleaned_data.get('name')
+          subject = form.cleaned_data.get('subject')
+          from_email = form.cleaned_data.get('from_email')
+          message = form.cleaned_data.get('message')
+          name = form.cleaned_data.get('name')
         
-        # message_format = f"{name} sent you a new message : \n\n{message}"
-        return render(request, 'contact_succuss.html')    
+          message_format = f"{name} sent you a new message : \n\n{message}"
+          msg = EmailMessage(
+                    'subject',
+                    'message_format',
+                    'from@example.com',
+                    ['to1@example.com', 'to2@example.com'],
+
+                  )
+          msg.send()
+          
+          return render(request, 'contact_succuss.html')    
     else:
       form = ContactForm()   
     return render(request, 'contact.html', {'form': form})

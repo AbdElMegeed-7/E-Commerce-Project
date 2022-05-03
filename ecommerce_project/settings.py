@@ -131,3 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+EMAIL_HOST = 'stmp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'Email'
+EMAIL_HOST_PASSWORD = 'PassWord'
+EMAIL_USE_TLS = True 
+
